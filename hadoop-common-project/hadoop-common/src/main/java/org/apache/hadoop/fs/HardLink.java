@@ -43,7 +43,7 @@ public class HardLink {
     OS_TYPE_UNIX,
     OS_TYPE_WINXP,
     OS_TYPE_SOLARIS,
-    OS_TYPE_MAC
+    OS_TYPE_BSD
   }
   
   public static OSType osType;
@@ -63,7 +63,7 @@ public class HardLink {
       getHardLinkCommand = new HardLinkCGUnix();
       //override getLinkCountCommand for the particular Unix variant
       //Linux is already set as the default - {"stat","-c%h", null}
-      if (osType == OSType.OS_TYPE_MAC) {
+      if (osType == OSType.OS_TYPE_BSD) {
         String[] linkCountCmdTemplate = {"stat","-f%l", null};
         HardLinkCGUnix.setLinkCountCmdTemplate(linkCountCmdTemplate);
       } else if (osType == OSType.OS_TYPE_SOLARIS) {
@@ -92,8 +92,9 @@ public class HardLink {
             || osName.contains("Solaris")) {
        return OSType.OS_TYPE_SOLARIS;
     }
-    else if (osName.contains("Mac")) {
-       return OSType.OS_TYPE_MAC;
+    else if (osName.contains("BSD")
+            || osName.contains("Mac")) {
+       return OSType.OS_TYPE_BSD;
     }
     else {
       return OSType.OS_TYPE_UNIX;
